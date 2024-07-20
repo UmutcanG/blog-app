@@ -57,7 +57,7 @@ class PostServiceTest {
     }
 
     @Test
-    void testCreatePost_author_notfound_throws_exception() {
+    void testCreatePost_authorNotfound_throwsException() {
         author = new UserInfo();
         author.setId(1L);
         author.setName("author");
