@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .permitAll())
                 .build();
     }
+    //comment
 
     @Bean
     public PasswordEncoder passwordEncoder() {
