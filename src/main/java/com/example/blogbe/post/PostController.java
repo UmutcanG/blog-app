@@ -26,8 +26,4 @@ public class PostController {
         return postService.findAll();
     }
 
-    @GetMapping("welcome")
-    public String welcome() {
-        return "welcome";
-    }
 }

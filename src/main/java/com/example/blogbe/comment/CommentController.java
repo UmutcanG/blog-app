@@ -30,7 +30,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/delete-comment/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteComment(@PathVariable Long id) {
         commentService.deleteComment(id);
     }

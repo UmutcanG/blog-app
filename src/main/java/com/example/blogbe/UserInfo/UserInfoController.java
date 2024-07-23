@@ -9,7 +9,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/users")
 public class UserInfoController {
 
     private final UserInfoService userInfoService;
@@ -19,8 +18,13 @@ public class UserInfoController {
         return userInfoService.save(user);
     }
 
-    @GetMapping
+    @GetMapping("/users")
     public List<UserInfo> getAllUsers() {
         return userInfoService.getAllUsers();
+    }
+
+    @GetMapping("welcome")
+    public String welcome() {
+        return "welcome";
     }
 }
