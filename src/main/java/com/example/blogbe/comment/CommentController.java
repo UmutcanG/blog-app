@@ -24,13 +24,14 @@ public class CommentController {
         return commentService.save(comment,postId,authorId);
     }
 
+
     @GetMapping
     public List<Comment> getAllComments() {
         return commentService.getAllComments();
     }
 
     @DeleteMapping("/delete-comment/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteComment(@PathVariable Long id) {
         commentService.deleteComment(id);
     }

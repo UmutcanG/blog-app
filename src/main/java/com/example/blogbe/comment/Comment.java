@@ -1,11 +1,11 @@
+// Comment.java
 package com.example.blogbe.comment;
 
 import com.example.blogbe.UserInfo.UserInfo;
 import com.example.blogbe.post.Post;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 @Entity
@@ -14,14 +14,15 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "post_id")
+    @JsonBackReference
     private Post post;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id")
     private UserInfo user;
-
 }

@@ -16,14 +16,24 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/add-post")
-    @PreAuthorize("hasRole('ADMIN')")
-    public Post createPost(@RequestBody Post post, @RequestParam Long authorId) {
-        return postService.createPost(post,authorId);
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Post createPost(@RequestBody Post post) {
+        return postService.createPost(post);
     }
 
+    @GetMapping("/{postId}")
+    public Post getPostById(@PathVariable Long postId) {
+        return postService.getPostById(postId);
+    }
     @GetMapping
     public List<Post> getAllPosts() {
         return postService.findAll();
+    }
+
+    @DeleteMapping("/{postId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void deletePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
     }
 
 }

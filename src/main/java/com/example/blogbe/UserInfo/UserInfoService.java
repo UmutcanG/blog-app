@@ -1,9 +1,13 @@
 package com.example.blogbe.UserInfo;
 
 
+import com.example.blogbe.comment.CommentRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,7 +20,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class UserInfoService {
-
 
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
@@ -42,17 +45,24 @@ public class UserInfoService {
     public List<UserInfo> getAllUsers() {
         return userInfoRepository.findAll();
     }
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+
+    public UserInfo getUserByUsername(String username) {
+        return userInfoRepository.findByUsername(username);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        StringBuilder sb = new StringBuilder();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            sb.append(error.getDefaultMessage()).append(" ");
-        });
-        return new ResponseEntity<>(sb.toString().trim(), HttpStatus.BAD_REQUEST);
+    public UserInfo getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            return getUserByUsername(username);
+        } else {
+            throw new RuntimeException("User is not authenticated");
+        }
     }
+
+    public void deleteUser(Long userId) {
+        userInfoRepository.deleteById(userId);
+    }
+
+
 }
